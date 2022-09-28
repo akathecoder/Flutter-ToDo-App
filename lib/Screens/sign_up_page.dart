@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_todo_app/Screens/login_page.dart';
+import 'package:flutter_todo_app/Screens/my_homepage.dart';
 import 'package:flutter_todo_app/utilities/firebase_auth.dart';
 import 'package:flutter_todo_app/utilities/validation.dart';
 
@@ -108,7 +108,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             password: password,
                           ).then((value) {
                             Navigator.pushNamedAndRemoveUntil(
-                                context, LoginPage.id, (_) => false);
+                                context, MyHomePage.id, (_) => false);
                           });
                         }
                       },

@@ -28,7 +28,6 @@ class _MyHomePageState extends State<MyHomePage> {
         if (value != null) {
           loginedUser = value;
         } else {
-          // Navigator.pushNamed(context, LoginPage.id);
           Navigator.pushNamedAndRemoveUntil(
               context, LoginPage.id, (_) => false);
         }
@@ -38,6 +37,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      setState(() {
+        loginedUser = user;
+      });
+
+      // if (user == null) {
+      //   Navigator.pushNamedAndRemoveUntil(context, LoginPage.id, (_) => false);
+      // }
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -56,6 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             onPressed: () {
               logoutUser();
+              Navigator.pushNamedAndRemoveUntil(
+                  context, LoginPage.id, (_) => false);
             },
           )
         ],

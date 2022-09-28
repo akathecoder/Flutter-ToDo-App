@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                         hintText: 'your\$secretPassw0rd',
                         border: OutlineInputBorder(),
                         suffixIcon: Icon(
-                          Icons.email,
+                          Icons.password,
                         ),
                       ),
                       validator: (value) {
@@ -106,9 +106,18 @@ class _LoginPageState extends State<LoginPage> {
                             signInWithEmailAndPassword(
                               emailAddress: emailAddress,
                               password: password,
-                            ).then((value) {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, MyHomePage.id, (_) => false);
+                            ).then((user) {
+                              if (user == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Invalid Email or Password'),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              } else {
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, MyHomePage.id, (_) => false);
+                              }
                             });
                           }
                         }
