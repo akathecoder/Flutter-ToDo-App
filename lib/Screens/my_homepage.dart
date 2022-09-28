@@ -63,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
               Icons.logout,
               color: Colors.white,
             ),
+            tooltip: "Logout",
             onPressed: () {
               logoutUser();
               Navigator.pushNamedAndRemoveUntil(
