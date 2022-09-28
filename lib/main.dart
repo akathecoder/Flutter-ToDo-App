@@ -1,7 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_todo_app/my_homepage.dart';
+import 'package:flutter_todo_app/Screens/add_item_page.dart';
+import 'package:flutter_todo_app/Screens/my_homepage.dart';
+import 'package:flutter_todo_app/firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -15,8 +22,13 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
       ),
-      home: const MyHomePage(title: 'Flutter ToDo App'),
+      routes: {
+        MyHomePage.id: (context) => const MyHomePage(title: "Flutter ToDo App"),
+        AddItemPage.id: (context) => const AddItemPage(),
+      },
+      initialRoute: MyHomePage.id,
     );
   }
 }

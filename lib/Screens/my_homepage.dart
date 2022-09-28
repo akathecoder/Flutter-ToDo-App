@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_todo_app/add_item_page.dart';
+import 'package:flutter_todo_app/Screens/add_item_page.dart';
 
 class MyHomePage extends StatefulWidget {
+  static String id = "homePage";
+
   const MyHomePage({super.key, required this.title});
 
   final String title;
@@ -27,10 +29,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AddItemPage()),
-          );
+          Navigator.pushNamed(context, AddItemPage.id);
         },
         tooltip: "Add Item",
         elevation: 10,

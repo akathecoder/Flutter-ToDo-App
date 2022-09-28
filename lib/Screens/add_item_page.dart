@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class AddItemPage extends StatefulWidget {
+  static String id = "addItemPage";
+
   const AddItemPage({super.key});
 
   final String title = "Add Item";
