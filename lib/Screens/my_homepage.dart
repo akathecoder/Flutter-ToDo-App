@@ -41,10 +41,6 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         loginedUser = user;
       });
-
-      // if (user == null) {
-      //   Navigator.pushNamedAndRemoveUntil(context, LoginPage.id, (_) => false);
-      // }
     });
 
     return Scaffold(
@@ -71,6 +67,17 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           )
         ],
+      ),
+      body: Container(
+        child: ListView.builder(
+          itemCount: 10,
+          itemBuilder: (context, index) {
+            return const ListTile(
+              title: Text("Title"),
+              subtitle: Text("This is the subtitle"),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
