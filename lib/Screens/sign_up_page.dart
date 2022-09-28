@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_todo_app/Screens/login_page.dart';
+import 'package:flutter_todo_app/utilities/firebase_auth.dart';
+import 'package:flutter_todo_app/utilities/validation.dart';
 
 class SignUpPage extends StatefulWidget {
   static String id = "signUpPage";
@@ -17,6 +20,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    String emailAddress = "";
+    String password = "";
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -40,6 +46,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: TextFormField(
+                      onSaved: (value) {
+                        emailAddress = value!;
+                      },
                       decoration: const InputDecoration(
                         labelText: 'Email ID',
                         hintText: 'username@email.com',
@@ -48,12 +57,11 @@ class _SignUpPageState extends State<SignUpPage> {
                           Icons.email,
                         ),
                       ),
+                      keyboardType: TextInputType.emailAddress,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter an email id';
-                        } else if (RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(value)) {
+                        } else if (!isEmailValid(value)) {
                           return 'Please enter a valid email id';
                         }
                         return null;
@@ -63,18 +71,23 @@ class _SignUpPageState extends State<SignUpPage> {
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: TextFormField(
+                      // obscureText: true,
+                      onSaved: (value) {
+                        password = value!;
+                      },
                       decoration: const InputDecoration(
                         labelText: 'Password',
                         hintText: 'your\$secretPassw0rd',
                         border: OutlineInputBorder(),
                         suffixIcon: Icon(
-                          Icons.email,
+                          Icons.password,
                         ),
                       ),
+                      keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter a password';
-                        } else if (value.length >= 8) {
+                        } else if (!isPasswordValid(value)) {
                           return 'Please enter a valid password';
                         }
                         return null;
@@ -89,9 +102,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Processing Data')),
-                          );
+                          _formKey.currentState?.save();
+                          createUserWithEmailAndPassword(
+                            emailAddress: emailAddress,
+                            password: password,
+                          ).then((value) {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, LoginPage.id, (_) => false);
+                          });
                         }
                       },
                       child: const Text('Sign Up'),

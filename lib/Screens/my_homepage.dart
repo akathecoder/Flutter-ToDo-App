@@ -48,6 +48,17 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         centerTitle: true,
         elevation: 10,
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              logoutUser();
+            },
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
