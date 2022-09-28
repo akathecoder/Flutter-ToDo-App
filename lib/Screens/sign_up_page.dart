@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_todo_app/Screens/sign_up_page.dart';
 
-class LoginPage extends StatefulWidget {
-  static String id = "loginPage";
+class SignUpPage extends StatefulWidget {
+  static String id = "signUpPage";
 
-  const LoginPage({super.key});
+  const SignUpPage({super.key});
 
-  final String title = "Sign In";
+  final String title = "Sign Up";
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -95,20 +94,8 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         }
                       },
-                      child: const Text('Sign In'),
+                      child: const Text('Sign Up'),
                     ),
-                  ),
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      primary: Colors.grey.shade600,
-                      textStyle: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onPressed: () {
-                      Navigator.pushNamed(context, SignUpPage.id);
-                    },
-                    child: const Text("Sign Up"),
                   ),
                 ],
               ),
