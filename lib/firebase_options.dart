@@ -17,24 +17,15 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -52,11 +43,41 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyAG4fkWySBK1S6GfWiMTJ0xDGmUFxWDdMA',
+    appId: '1:986364414232:web:33887c31a2c2473382766d',
+    messagingSenderId: '986364414232',
+    projectId: 'flutter-todo-app-188bb',
+    authDomain: 'flutter-todo-app-188bb.firebaseapp.com',
+    storageBucket: 'flutter-todo-app-188bb.appspot.com',
+    measurementId: 'G-2RZ4YEXWM5',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyB1DOilewlNWPSeylaLkE2B_1Fdu1rAMeo',
     appId: '1:986364414232:android:91c122fa5cd1817882766d',
     messagingSenderId: '986364414232',
     projectId: 'flutter-todo-app-188bb',
     storageBucket: 'flutter-todo-app-188bb.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyAKSMGuBEk0IAgrQrNGxyteAOEUYkbcWJo',
+    appId: '1:986364414232:ios:95f5cdf1b3e4189d82766d',
+    messagingSenderId: '986364414232',
+    projectId: 'flutter-todo-app-188bb',
+    storageBucket: 'flutter-todo-app-188bb.appspot.com',
+    iosClientId: '986364414232-4kbvqkfas3dn2crkhth6kg09ci5d5c2h.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flutterTodoApp',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyAKSMGuBEk0IAgrQrNGxyteAOEUYkbcWJo',
+    appId: '1:986364414232:ios:95f5cdf1b3e4189d82766d',
+    messagingSenderId: '986364414232',
+    projectId: 'flutter-todo-app-188bb',
+    storageBucket: 'flutter-todo-app-188bb.appspot.com',
+    iosClientId: '986364414232-4kbvqkfas3dn2crkhth6kg09ci5d5c2h.apps.googleusercontent.com',
+    iosBundleId: 'com.example.flutterTodoApp',
   );
 }
