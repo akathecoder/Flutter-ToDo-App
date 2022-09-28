@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_todo_app/Screens/add_item_page.dart';
+import 'package:flutter_todo_app/Screens/login_page.dart';
 import 'package:flutter_todo_app/Screens/my_homepage.dart';
 import 'package:flutter_todo_app/firebase_options.dart';
 
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
       routes: {
         MyHomePage.id: (context) => const MyHomePage(title: "Flutter ToDo App"),
         AddItemPage.id: (context) => const AddItemPage(),
+        LoginPage.id: (context) => const LoginPage(),
       },
       initialRoute: MyHomePage.id,
     );
