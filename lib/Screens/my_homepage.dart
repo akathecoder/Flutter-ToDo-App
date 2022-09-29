@@ -22,6 +22,8 @@ class _MyHomePageState extends State<MyHomePage> {
   User? loginedUser;
   List<ToDoItem> todoItems = [];
 
+  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
+
   Future<void> changeTodoItem({
     required bool value,
     required ToDoItem item,
@@ -64,19 +66,34 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
 
-    getItems().then((items) {
-      items!.sort((a, b) => a.data().id.compareTo(b.data().id));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getItems().then((items) {
+        items!.sort((a, b) => a.data().id.compareTo(b.data().id));
 
-      for (var e in items) {
-        todoItems.add(ToDoItem(
-          id: e.data().id,
-          title: e.data().title,
-          information: e.data().information,
-          complete: e.data().complete,
-        ));
-      }
+        Future ft = Future(() {});
+        for (var e in items) {
+          ft = ft.then((data) {
+            return Future.delayed(const Duration(milliseconds: 100), () {
+              todoItems.add(ToDoItem(
+                id: e.data().id,
+                title: e.data().title,
+                information: e.data().information,
+                complete: e.data().complete,
+              ));
+              _listKey.currentState?.insertItem(todoItems.length - 1);
+            });
+          });
+        }
+      });
     });
   }
+
+  final Animatable<Offset> _offset = Tween(
+    begin: const Offset(1, 0),
+    end: const Offset(0, 0),
+  ).chain(CurveTween(
+    curve: Curves.elasticInOut,
+  ));
 
   @override
   Widget build(BuildContext context) {
@@ -111,31 +128,39 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: ListView.builder(
-        itemCount: todoItems.length,
-        itemBuilder: (context, index) {
-          return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6.0),
-              child: CheckboxListTile(
-                title: Text(todoItems[index].title),
-                subtitle: Text(todoItems[index].information),
-                value: todoItems[index].complete,
-                onChanged: (value) {
-                  if (value != null) {
-                    changeTodoItem(value: value, item: todoItems[index]);
-                  }
-                },
-                controlAffinity: ListTileControlAffinity.leading,
-                checkboxShape: const CircleBorder(),
-                secondary: IconButton(
-                  onPressed: () {
-                    deleteTodoItem(todoItems[index]);
+      body: AnimatedList(
+        key: _listKey,
+        initialItemCount: todoItems.length,
+        itemBuilder: (context, index, animation) {
+          return SlideTransition(
+            position: animation.drive(_offset),
+            child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 6.0),
+                child: CheckboxListTile(
+                  title: Text(todoItems[index].title),
+                  subtitle: Text(todoItems[index].information),
+                  value: todoItems[index].complete,
+                  onChanged: (value) {
+                    if (value != null) {
+                      changeTodoItem(value: value, item: todoItems[index]);
+                    }
                   },
-                  icon: const Icon(Icons.delete),
-                  splashColor: Colors.red,
-                  tooltip: "Delete",
-                ),
-              ));
+                  controlAffinity: ListTileControlAffinity.leading,
+                  checkboxShape: const CircleBorder(),
+                  secondary: IconButton(
+                    onPressed: () {
+                      deleteTodoItem(todoItems[index]);
+                      // AnimatedList.of(context).removeItem(index,
+                      //     (context, animation) {
+                      //   return Container();
+                      // });
+                    },
+                    icon: const Icon(Icons.delete),
+                    splashColor: Colors.red,
+                    tooltip: "Delete",
+                  ),
+                )),
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
