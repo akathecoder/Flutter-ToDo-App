@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_todo_app/Screens/add_item_page.dart';
 import 'package:flutter_todo_app/Screens/login_page.dart';
 import 'package:flutter_todo_app/utilities/firebase_auth.dart';
+import 'package:flutter_todo_app/utilities/firebase_firestore.dart';
+import 'package:flutter_todo_app/utilities/todo_item.dart';
 
 class MyHomePage extends StatefulWidget {
   static String id = "homePage";
@@ -18,6 +20,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   User? loginedUser;
+  List<ToDoItem> todoItems = [];
 
   @override
   void initState() {
@@ -33,6 +36,17 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       },
     );
+
+    getItems().then((items) {
+      items!.sort((a, b) => a.data().id.compareTo(b.data().id));
+
+      for (var e in items) {
+        todoItems.add(ToDoItem(
+            id: e.data().id,
+            title: e.data().title,
+            information: e.data().information));
+      }
+    });
   }
 
   @override
@@ -68,16 +82,14 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: Container(
-        child: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return const ListTile(
-              title: Text("Title"),
-              subtitle: Text("This is the subtitle"),
-            );
-          },
-        ),
+      body: ListView.builder(
+        itemCount: todoItems.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(todoItems[index].title),
+            subtitle: Text(todoItems[index].information),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
