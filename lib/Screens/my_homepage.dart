@@ -43,8 +43,26 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Future<void> deleteTodoItem(ToDoItem item) async {
-    todoItems.removeWhere((e) => e.id == item.id);
+  Future<void> deleteTodoItem(
+      {required int index, required ToDoItem item}) async {
+    final int removedItemIndex = todoItems.indexWhere((e) => e.id == item.id);
+    final ToDoItem removedItem = todoItems[removedItemIndex];
+    todoItems.removeAt(removedItemIndex);
+
+    _listKey.currentState?.removeItem(
+      index,
+      (context, animation) => _buildItem(
+        animation: animation,
+        item: removedItem,
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Item Deleted'),
+        backgroundColor: Colors.blueGrey,
+      ),
+    );
 
     await deleteItem(
       id: item.id,
@@ -132,34 +150,17 @@ class _MyHomePageState extends State<MyHomePage> {
         key: _listKey,
         initialItemCount: todoItems.length,
         itemBuilder: (context, index, animation) {
-          return SlideTransition(
-            position: animation.drive(_offset),
-            child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 6.0),
-                child: CheckboxListTile(
-                  title: Text(todoItems[index].title),
-                  subtitle: Text(todoItems[index].information),
-                  value: todoItems[index].complete,
-                  onChanged: (value) {
-                    if (value != null) {
-                      changeTodoItem(value: value, item: todoItems[index]);
-                    }
-                  },
-                  controlAffinity: ListTileControlAffinity.leading,
-                  checkboxShape: const CircleBorder(),
-                  secondary: IconButton(
-                    onPressed: () {
-                      deleteTodoItem(todoItems[index]);
-                      // AnimatedList.of(context).removeItem(index,
-                      //     (context, animation) {
-                      //   return Container();
-                      // });
-                    },
-                    icon: const Icon(Icons.delete),
-                    splashColor: Colors.red,
-                    tooltip: "Delete",
-                  ),
-                )),
+          return _buildItem(
+            animation: animation,
+            item: todoItems[index],
+            onChange: (value) {
+              if (value != null) {
+                changeTodoItem(value: value, item: todoItems[index]);
+              }
+            },
+            onDelete: () {
+              deleteTodoItem(index: index, item: todoItems[index]);
+            },
           );
         },
       ),
@@ -171,6 +172,33 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation: 10,
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  SlideTransition _buildItem({
+    required ToDoItem item,
+    required Animation<double> animation,
+    Function(bool?)? onChange,
+    Function()? onDelete,
+  }) {
+    return SlideTransition(
+      position: animation.drive(_offset),
+      child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 6.0),
+          child: CheckboxListTile(
+            title: Text(item.title),
+            subtitle: Text(item.information),
+            value: item.complete,
+            onChanged: onChange,
+            controlAffinity: ListTileControlAffinity.leading,
+            checkboxShape: const CircleBorder(),
+            secondary: IconButton(
+              onPressed: onDelete,
+              icon: const Icon(Icons.delete),
+              splashColor: Colors.red,
+              tooltip: "Delete",
+            ),
+          )),
     );
   }
 }
