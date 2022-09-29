@@ -54,6 +54,16 @@ Future<void> updateItem({
   }
 }
 
+Future<void> deleteItem({
+  required String id,
+}) async {
+  String currentUserUid = getLoggedInUserId();
+  if (currentUserUid.isNotEmpty) {
+    final eventsRef = getEventRef(currentUserUid);
+    await eventsRef.doc(id).delete();
+  }
+}
+
 Future<List<QueryDocumentSnapshot<ToDoItem>>?> getItems() async {
   String currentUserUid = getLoggedInUserId();
   if (currentUserUid.isNotEmpty) {

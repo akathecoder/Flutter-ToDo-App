@@ -41,6 +41,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Future<void> deleteTodoItem(ToDoItem item) async {
+    todoItems.removeWhere((e) => e.id == item.id);
+
+    await deleteItem(
+      id: item.id,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -120,7 +128,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 controlAffinity: ListTileControlAffinity.leading,
                 checkboxShape: const CircleBorder(),
                 secondary: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    deleteTodoItem(todoItems[index]);
+                  },
                   icon: const Icon(Icons.delete),
                   splashColor: Colors.red,
                   tooltip: "Delete",
