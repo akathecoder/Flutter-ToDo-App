@@ -18,6 +18,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  bool passwordVisibilty = false;
 
   @override
   Widget build(BuildContext context) {
@@ -63,9 +64,6 @@ class _LoginPageState extends State<LoginPage> {
                           labelText: 'Email ID',
                           hintText: 'username@email.com',
                           border: OutlineInputBorder(),
-                          suffixIcon: Icon(
-                            Icons.email,
-                          ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -80,16 +78,27 @@ class _LoginPageState extends State<LoginPage> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: TextFormField(
-                        obscureText: true,
+                        obscureText: !passwordVisibilty,
                         onSaved: (value) {
                           password = value!;
                         },
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Password',
                           hintText: 'your\$secretPassw0rd',
-                          border: OutlineInputBorder(),
-                          suffixIcon: Icon(
-                            Icons.password,
+                          border: const OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              passwordVisibilty
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                passwordVisibilty = !passwordVisibilty;
+                              });
+                            },
+                            splashRadius: 20,
+                            color: Colors.grey,
                           ),
                         ),
                         validator: (value) {
