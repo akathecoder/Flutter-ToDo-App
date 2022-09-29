@@ -38,6 +38,14 @@ class _LoginPageState extends State<LoginPage> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 60.0, bottom: 20.0),
+            child: Icon(
+              Icons.task_alt,
+              size: 100,
+              color: Colors.blueAccent,
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 40),
             child: Form(
