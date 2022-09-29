@@ -122,6 +122,14 @@ class _LoginPageState extends State<LoginPage> {
                             if (_formKey.currentState!.validate()) {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState?.save();
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Logging In . . .'),
+                                    backgroundColor: Colors.grey,
+                                  ),
+                                );
+
                                 signInWithEmailAndPassword(
                                   emailAddress: emailAddress,
                                   password: password,

@@ -139,7 +139,15 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             tooltip: "Logout",
             onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Logging Out . . .'),
+                  backgroundColor: Colors.grey,
+                ),
+              );
+
               logoutUser();
+
               Navigator.pushNamedAndRemoveUntil(
                   context, LoginPage.id, (_) => false);
             },
