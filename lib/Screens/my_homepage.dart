@@ -42,9 +42,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
       for (var e in items) {
         todoItems.add(ToDoItem(
-            id: e.data().id,
-            title: e.data().title,
-            information: e.data().information));
+          id: e.data().id,
+          title: e.data().title,
+          information: e.data().information,
+          complete: e.data().complete,
+        ));
       }
     });
   }
@@ -85,10 +87,22 @@ class _MyHomePageState extends State<MyHomePage> {
       body: ListView.builder(
         itemCount: todoItems.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(todoItems[index].title),
-            subtitle: Text(todoItems[index].information),
-          );
+          return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6.0),
+              child: CheckboxListTile(
+                title: Text(todoItems[index].title),
+                subtitle: Text(todoItems[index].information),
+                value: todoItems[index].complete,
+                onChanged: (_) {},
+                controlAffinity: ListTileControlAffinity.leading,
+                checkboxShape: const CircleBorder(),
+                secondary: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.delete),
+                  splashColor: Colors.red,
+                  tooltip: "Delete",
+                ),
+              ));
         },
       ),
       floatingActionButton: FloatingActionButton(

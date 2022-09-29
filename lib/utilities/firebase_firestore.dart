@@ -30,6 +30,7 @@ Future<void> addItem({
             id: ts,
             title: title,
             information: information,
+            complete: false,
           ),
         );
   }
