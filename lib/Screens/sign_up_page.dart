@@ -34,92 +34,94 @@ class _SignUpPageState extends State<SignUpPage> {
         centerTitle: true,
         elevation: 10,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 40),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: TextFormField(
-                      onSaved: (value) {
-                        emailAddress = value!;
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'Email ID',
-                        hintText: 'username@email.com',
-                        border: OutlineInputBorder(),
-                        suffixIcon: Icon(
-                          Icons.email,
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: TextFormField(
+                        onSaved: (value) {
+                          emailAddress = value!;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Email ID',
+                          hintText: 'username@email.com',
+                          border: OutlineInputBorder(),
+                          suffixIcon: Icon(
+                            Icons.email,
+                          ),
                         ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter an email id';
+                          } else if (!isEmailValid(value)) {
+                            return 'Please enter a valid email id';
+                          }
+                          return null;
+                        },
                       ),
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter an email id';
-                        } else if (!isEmailValid(value)) {
-                          return 'Please enter a valid email id';
-                        }
-                        return null;
-                      },
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: TextFormField(
-                      // obscureText: true,
-                      onSaved: (value) {
-                        password = value!;
-                      },
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                        hintText: 'your\$secretPassw0rd',
-                        border: OutlineInputBorder(),
-                        suffixIcon: Icon(
-                          Icons.password,
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: TextFormField(
+                        // obscureText: true,
+                        onSaved: (value) {
+                          password = value!;
+                        },
+                        decoration: const InputDecoration(
+                          labelText: 'Password',
+                          hintText: 'your\$secretPassw0rd',
+                          border: OutlineInputBorder(),
+                          suffixIcon: Icon(
+                            Icons.password,
+                          ),
                         ),
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a password';
+                          } else if (!isPasswordValid(value)) {
+                            return 'Please enter a valid password';
+                          }
+                          return null;
+                        },
                       ),
-                      keyboardType: TextInputType.text,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a password';
-                        } else if (!isPasswordValid(value)) {
-                          return 'Please enter a valid password';
-                        }
-                        return null;
-                      },
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(50),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(50),
+                        ),
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState?.save();
+                            createUserWithEmailAndPassword(
+                              emailAddress: emailAddress,
+                              password: password,
+                            ).then((value) {
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, MyHomePage.id, (_) => false);
+                            });
+                          }
+                        },
+                        child: const Text('Sign Up'),
                       ),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          _formKey.currentState?.save();
-                          createUserWithEmailAndPassword(
-                            emailAddress: emailAddress,
-                            password: password,
-                          ).then((value) {
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, MyHomePage.id, (_) => false);
-                          });
-                        }
-                      },
-                      child: const Text('Sign Up'),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -146,23 +146,25 @@ class _MyHomePageState extends State<MyHomePage> {
           )
         ],
       ),
-      body: AnimatedList(
-        key: _listKey,
-        initialItemCount: todoItems.length,
-        itemBuilder: (context, index, animation) {
-          return _buildItem(
-            animation: animation,
-            item: todoItems[index],
-            onChange: (value) {
-              if (value != null) {
-                changeTodoItem(value: value, item: todoItems[index]);
-              }
-            },
-            onDelete: () {
-              deleteTodoItem(index: index, item: todoItems[index]);
-            },
-          );
-        },
+      body: SafeArea(
+        child: AnimatedList(
+          key: _listKey,
+          initialItemCount: todoItems.length,
+          itemBuilder: (context, index, animation) {
+            return _buildItem(
+              animation: animation,
+              item: todoItems[index],
+              onChange: (value) {
+                if (value != null) {
+                  changeTodoItem(value: value, item: todoItems[index]);
+                }
+              },
+              onDelete: () {
+                deleteTodoItem(index: index, item: todoItems[index]);
+              },
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
