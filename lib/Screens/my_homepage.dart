@@ -22,6 +22,25 @@ class _MyHomePageState extends State<MyHomePage> {
   User? loginedUser;
   List<ToDoItem> todoItems = [];
 
+  Future<void> changeTodoItem({
+    required bool value,
+    required ToDoItem item,
+  }) async {
+    ToDoItem newData = ToDoItem(
+      id: item.id,
+      title: item.title,
+      information: item.information,
+      complete: !item.complete,
+    );
+
+    todoItems[todoItems.indexWhere((e) => e.id == item.id)] = newData;
+
+    await updateItem(
+      id: item.id,
+      newData: newData,
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -93,7 +112,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 title: Text(todoItems[index].title),
                 subtitle: Text(todoItems[index].information),
                 value: todoItems[index].complete,
-                onChanged: (_) {},
+                onChanged: (value) {
+                  if (value != null) {
+                    changeTodoItem(value: value, item: todoItems[index]);
+                  }
+                },
                 controlAffinity: ListTileControlAffinity.leading,
                 checkboxShape: const CircleBorder(),
                 secondary: IconButton(

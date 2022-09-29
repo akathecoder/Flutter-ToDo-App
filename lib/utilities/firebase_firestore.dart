@@ -36,6 +36,24 @@ Future<void> addItem({
   }
 }
 
+Future<void> updateItem({
+  required String id,
+  required ToDoItem newData,
+}) async {
+  String currentUserUid = getLoggedInUserId();
+  if (currentUserUid.isNotEmpty) {
+    final eventsRef = getEventRef(currentUserUid);
+
+    await eventsRef.doc(id).update(
+      {
+        'title': newData.title,
+        'information': newData.information,
+        'complete': newData.complete,
+      },
+    );
+  }
+}
+
 Future<List<QueryDocumentSnapshot<ToDoItem>>?> getItems() async {
   String currentUserUid = getLoggedInUserId();
   if (currentUserUid.isNotEmpty) {
